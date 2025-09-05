@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Seja Bela - Loja de Roupas Online</title>
+  <meta name="description" content="Seja Bela - Loja online de roupas femininas elegantes e sofisticadas. Novidades, vestidos, conjuntos, básicos e muito mais." />
+  <style>
+    /* Reset e base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: #0b1a3d; /* azul escuro */
+      color: #f0f0f0;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-size: 16px;
+    }
+    a {
+      color: #a3c1f7;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    header {
+      background-color: #081433;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #a3c1f7;
+      font-family: 'Georgia', serif;
+      letter-spacing: 2px;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+    nav ul li {
+      font-weight: 600;
+    }
+    nav ul li a {
+      font-size: 1rem;
+    }
+    /* Banner principal editável */
+    .banner {
+      position: relative;
+      width: 100%;
+      max-height: 450px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    .banner img {
+      width: 100%;
+      height: 450px;
+      object-fit: cover;
+      transition: opacity 0.5s ease-in-out;
+    }
+    .banner .banner-text {
+      position: absolute;
+      bottom: 2rem;
+      left: 2rem;
+      background: rgba(11, 26, 61, 0.7);
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #a3c1f7;
+      max-width: 60%;
+    }
+    /* Área de destaques e promoções */
+    .promotions {
+      background-color: #081433;
+      padding: 1rem 2rem;
+      margin-bottom: 2rem;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .promotion-item {
+      background-color: #0b1a3d;
+      padding: 1rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 600;
+      color: #a3c1f7;
+      box-shadow: 0 0 8px #1a2a5a;
+      min-width: 180px;
+      text-align: center;
+    }
+    /* Produtos e categorias */
+    .categories {
+      padding: 0 2rem;
+      margin-bottom: 2rem;
+    }
+    .categories h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #a3c1f7;
+      font-weight: 700;
+    }
+    .category-list {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .category-list button {
+      background-color: #0b1a3d;
+      border: 2px solid #a3c1f7;
+      color: #a3c1f7;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    .category-list button.active,
+    .category-list button:hover {
+      background-color: #a3c1f7;
+      color: #0b1a3d;
+    }
+    /* Grid de produtos */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap: 1.5rem;
+      padding: 0 2rem 2rem 2rem;
+    }
+    .product-card {
+      background-color: #081433;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 10px #1a2a5a;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+    .product-card img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+    }
+    .product-info {
+      padding: 1rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .product-info h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #a3c1f7;
+    }
+    .product-info p {
+      flex-grow: 1;
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      margin-bottom: 0.5rem;
+    }
+    .price {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #f9a825;
+      margin-bottom: 0.5rem;
+    }
+    .btn-buy {
+      background-color: #f9a825;
+      border: none;
+      padding: 0.6rem;
+      border-radius: 6px;
+      font-weight: 700;
+      color: #0b1a3d;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .btn-buy:hover {
+      background-color: #c17900;
+    }
+    /* Página produto individual */
+    .product-detail {
+      max-width: 900px;
+      margin: 2rem auto;
+      background-color: #081433;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 0 15px #1a2a5a;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      color: #a3c1f7;
+    }
+    .product-detail img {
+      flex: 1 1 300px;
+      max-width: 400px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .product-detail-info {
+      flex: 1 1 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .product-detail-info h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #f9a825;
+    }
+    .product-detail-info p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: #cbd5e1;
+    }
+    .product-detail-info .price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: #f9a825;
+    }
+    .product-detail-info .btn-buy {
+      width: 100%;
+      font-size: 1.1rem;
+      padding: 1rem;
+    }
+    /* Carrinho */
+    .cart {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 320px;
+      height: 100vh;
+      background-color: #081433;
+      box-shadow: -4px 0 10px rgba(0,0,0,0.7);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      z-index: 1100;
+    }
+    .cart.open {
+      transform: translateX(0);
+    }
+    .cart-header {
+      padding: 1rem;
+      background-color: #0b1a3d;
+      color: #a3c1f7;
+      font-weight: 700;
+      font-size: 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart-close {
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: #f9a825;
+    }
+    .cart-items {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #1a2a5a;
+      padding-bottom: 0.5rem;
+    }
+    .cart-item-name {
+      flex: 1 1 60%;
+      color: #a3c1f7;
+    }
+    .cart-item-qty {
+      flex: 1 1 20%;
+      text-align: center;
+    }
+    .cart-item-price {
+      flex: 1 1 20%;
+      text-align: right;
+      color: #f9a825;
+      font-weight: 700;
+    }
+    .cart-footer {
+      padding: 1rem;
+      border-top: 1px solid #1a2a5a;
+      background-color: #0b1a3d;
+    }
+    .cart-total {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: #f9a825;
+      text-align: right;
+    }
+    .btn-checkout {
+      width: 100%;
+      padding: 1rem;
+      background-color: #f9a825;
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      color: #0b1a3d;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+    }
+    .btn-checkout:hover {
+      background-color: #c17900;
+    }
+    /* Footer */
+    footer {
+      background-color: #081433;
+      padding: 1rem 2rem;
+      text-align: center;
+      color: #a3c1f7;
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .product-detail {
+        flex-direction: column;
+        align-items: center;
+      }
+      .product-detail img,
+      .product-detail-info {
+        max-width: 100%;
+        flex: 1 1 100%;
+      }
+      nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      header {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .banner .banner-text {
+        max-width: 90%;
+        font-size: 1.2rem;
+        left: 1rem;
+        bottom: 1rem;
+      }
+      .cart {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Seja Bela</div>
+  <nav>
+    <ul>
+      <li><a href="#" data-category="novidades">Novidades</a></li>
+      <li><a href="#" data-category="vestidos">Vestidos</a></li>
+      <li><a href="#" data-category="conjuntos">Conjuntos</a></li>
+      <li><a href="#" data-category="basicos">Básicos</a></li>
+      <li><a href="#" id="cart-toggle">Carrinho 🛒</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="banner" id="banner">
+  <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1350&q=80" alt="Banner principal" id="banner-img" />
+  <div class="banner-text" id="banner-text">Elegância e sofisticação para você</div>
+</section>
+
+<section class="promotions" aria-label="Promoções e destaques">
+  <div class="promotion-item">40% OFF Comprando 6 ou mais</div>
+  <div class="promotion-item">Frete grátis acima de R$300</div>
+  <div class="promotion-item">Novas coleções toda semana</div>
+</section>
+
+<section class="categories" aria-label="Categorias de produtos">
+  <h2>Categorias</h2>
+  <div class="category-list" id="category-list">
+    <button class="active" data-filter="all">Todos</button>
+    <button data-filter="novidades">Novidades</button>
+    <button data-filter="vestidos">Vestidos</button>
+    <button data-filter="conjuntos">Conjuntos</button>
+    <button data-filter="basicos">Básicos</button>
+  </div>
+</section>
+
+<section class="products-grid" id="products-grid" aria-label="Produtos">
+  <!-- Produtos serão inseridos via JS -->
+</section>
+
+<!-- Carrinho -->
+<aside class="cart" id="cart" aria-label="Carrinho de compras">
+  <div class="cart-header">
+    Carrinho
+    <span class="cart-close" id="cart-close" role="button" aria-label="Fechar carrinho">&times;</span>
+  </div>
+  <div class="cart-items" id="cart-items">
+    <p>Seu carrinho está vazio.</p>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total" id="cart-total">Total: R$ 0,00</div>
+    <button class="btn-checkout" id="btn-checkout">Finalizar Compra</button>
+  </div>
+</aside>
+
+<footer>
+  <p>Siga-nos no 
+    <a href="https://instagram.com/sejabela" target="_blank" rel="noopener" aria-label="Instagram Seja Bela">Instagram</a> | 
+    <a href="https://wa.me/5511999999999" target="_blank" rel="noopener" aria-label="WhatsApp Seja Bela">WhatsApp</a>
+  </p>
+  <p>© 2025 Seja Bela - Todos os direitos reservados</p>
+</footer>
+
+<script>
+  // Dados simulados dos produtos
+  const products = [
+    {
+      id: 1,
+      name: "Vestido Azul Marinho",
+      category: "vestidos",
+      price: 199.90,
+      description: "Vestido elegante em azul marinho, perfeito para ocasiões especiais.",
+      img: "https://images.unsplash.com/photo-1520975698511-1a7a7a3a3a3a?auto=format&fit=crop&w=400&q=80",
+      sizes: ["P", "M", "G"],
+      colors: ["Azul Marinho"]
+    },
+    {
+      id: 2,
+      name: "Conjunto Casual",
+      category: "conjuntos",
+      price: 249.90,
+      description: "Conjunto casual confortável e sofisticado para o dia a dia.",
+      img: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=400&q=80",
+      sizes: ["M", "G"],
+      colors: ["Cinza", "Preto"]
+    },
+    {
+      id: 3,
+      name: "Body Básico Branco",
+      category: "basicos",
+      price: 89.90,
+      description: "Body básico branco, essencial para compor looks variados.",
+      img: "https://images.unsplash.com/photo-1520975698511-1a7a7a3a3a3a?auto=format&fit=crop&w=400&q=80",
+      sizes: ["P", "M", "G"],
+      colors: ["Branco"]
+    },
+    {
+      id: 4,
+      name: "Vestido Floral",
+      category: "novidades",
+      price: 219.90,
+      description: "Vestido floral com toque feminino e delicado.",
+      img: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80",
+      sizes: ["P", "M"],
+      colors: ["Floral"]
+    },
+    {
+      id: 5,
+      name: "Pantalona Azul",
+      category: "novidades",
+      price: 179.90,
+      description: "Pantalona azul escura, elegante e confortável.",
+      img: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80",
+      sizes: ["M", "G"],
+      colors: ["Azul"]
+    }
+  ];
+
+  const productsGrid = document.getElementById('products-grid');
+  const categoryButtons = document.querySelectorAll('.category-list button');
+  const cartToggle = document.getElementById('cart-toggle');
+  const cart = document.getElementById('cart');
+  const cartClose = document.getElementById('cart-close');
+  const cartItemsContainer = document.getElementById('cart-items');
+  const cartTotal = document.getElementById('cart-total');
+  const btnCheckout = document.getElementById('btn-checkout');
+
+  let cartItems = [];
+
+  // Função para formatar preço
+  function formatPrice(price) {
+    return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  // Renderizar produtos filtrados
+  function renderProducts(filter = 'all') {
+    productsGrid.innerHTML = '';
+    let filteredProducts = filter === 'all' ? products : products.filter(p => p.category === filter);
+    if(filteredProducts.length === 0) {
+      productsGrid.innerHTML = '<p style="color:#a3c1f7;">
